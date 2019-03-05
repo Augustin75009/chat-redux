@@ -12,6 +12,12 @@ import '../assets/stylesheets/application.scss';
 const reducers = combineReducers({
   changeMe: (state = null, action) => state
 });
+const initialState = {
+  // channel: channelReducer,
+  // messageList: messageReducer
+};
+
+const username = window.prompt("Your username");
 
 // render an instance of the component in the DOM
 ReactDOM.render(
