@@ -1,15 +1,20 @@
-import React, { Component } from 'react';
-// import { bindActionCreators } from 'redux';
+import React from 'react';
+import { emojify } from 'react-emojione';
 
 
-class Message extends Component {
-  render() {
-    return (
-      <div className="message">
-        <p>A message...</p>
-      </div>
-    );
-  }
-}
+const Message = (props) => {
+  const { created_at, author, content } = props.message;
+  const time = new Date(created_at).toLocaleTimeString();
+  return (
+    <div className="message-container">
+      <i className="author">
+        <span>{author}</span>
+        <small>{time}</small>
+      </i>
+      <p>{emojify(content)}</p>
+    </div>
+  );
+};
+
 
 export default Message;

@@ -2,54 +2,57 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import logger from 'redux-logger';
-import promiseMiddleware from 'redux-promise';
+import reduxPromise from 'redux-promise';
 
 import { Provider } from 'react-redux';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore,
+  combineReducers,
+  applyMiddleware } from 'redux';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { createHistory as history } from 'history';
+
+// reducers
 import messagesReducer from './reducers/messages_reducer';
-// Logger with default options
-
-// Promise
-
+import channelReducer from './reducers/channel_reducer';
 
 // internal modules
 import App from './components/app';
 import '../assets/stylesheets/application.scss';
 
+// const username = prompt("Your username");
+
+const identityReducer = (state = null) => state;
+
+const initialState = {
+  messages: [],
+  channels: ['general', 'pote', 'comet'],
+  currentUser: 'AugustinC'
+};
 
 // State and reducers
 const reducers = combineReducers({
-  // changeMe: (state = null, action) => state
-  messages: messagesReducer
+  messages: messagesReducer,
+  channels: channelReducer,
+  currentUser: identityReducer
 });
-const initialState = {
-  messages: [
-    {
-      author: "anonymous92",
-      content: "Hello world!",
-      created_at: "2017-09-26T23:03:16.365Z"
-    },
-    {
-      author: "anonymous77",
-      content: "My name is anonymous77",
-      created_at: "2017-09-26T23:03:21.194Z"
-    }
-  ],
-  // messageList: messageReducer
-};
 
-const store = createStore(
-  reducers,
-  applyMiddleware(logger)
-);
+
+const Middleware = applyMiddleware(reduxPromise, logger);
+const store = createStore(reducers,
+  initialState,
+  Middleware);
 
 // init username
-const username = window.prompt("Your username");
 
 // render an instance of the component in the DOM
 ReactDOM.render(
-  <Provider store={createStore(reducers, initialState)}>
-    <App />
+  <Provider store={store}>
+    <Router history={history}>
+      <Switch>
+        <Route path="/:channel" component={App} />
+        <Redirect from="/" to="/general" />
+      </Switch>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );
