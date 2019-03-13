@@ -1,4 +1,4 @@
-export default function messagesReducer(state = null, action) {
+export default function (state = null, action) {
   // debugger
   if (state === undefined) {
     return [];

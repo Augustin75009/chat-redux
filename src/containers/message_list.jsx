@@ -39,6 +39,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(reduxState) {
+  console.log(reduxState)
   return {
     messages: reduxState.messages
   };
